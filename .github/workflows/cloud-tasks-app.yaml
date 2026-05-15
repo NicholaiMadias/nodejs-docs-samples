@@ -48,8 +48,8 @@ jobs:
           try {
             await github.rest.issues.removeLabel({
               name: 'actions:force-run',
-              owner: 'GoogleCloudPlatform',
-              repo: 'nodejs-docs-samples',
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               issue_number: context.payload.pull_request.number
             });
           } catch (e) {
@@ -61,4 +61,4 @@ jobs:
       run: |
         curl https://github.com/googleapis/repo-automation-bots/releases/download/flakybot-1.1.0/flakybot -o flakybot -s -L
         chmod +x ./flakybot
-        ./flakybot --repo GoogleCloudPlatform/nodejs-docs-samples --commit_hash ${{github.sha}} --build_url https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
+        ./flakybot --repo ${{github.repository}} --commit_hash ${{github.sha}} --build_url https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
